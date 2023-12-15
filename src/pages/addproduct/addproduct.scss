@@ -1,0 +1,11 @@
+.addproduct{
+    padding: 16px;
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
+    
+    .heading{
+        font-size: 18px;
+        font-weight: 500;
+    }
+}

@@ -1,0 +1,26 @@
+.tableview{
+    background-color: white;
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    .upper{
+        display: flex;
+        gap: 10px;
+        padding: 10px 0px;
+        border-bottom: 1px solid rgb(235, 232, 232);
+        div{
+            padding: 2px 10px;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .active{
+            border-top: 1px solid red;
+            background-color: rgb(240, 239, 239);
+        }
+    }
+    .lower{
+        padding: 5px;
+    }
+}

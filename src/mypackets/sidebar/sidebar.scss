@@ -1,0 +1,82 @@
+.sidebar{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 13px;
+    color: white;
+    .item{
+        display: flex;
+        gap: 5px;
+        border-bottom: 1px solid rgb(56, 55, 55);
+        padding: 10px;
+        align-items: center;
+        cursor: pointer;
+        // border-radius: 10px;
+        .icon{
+            display: flex;
+            align-items: center;      
+        }
+        .term{
+            display: flex;
+            flex-direction: column;
+            .master{
+                font-weight: 300;
+            }
+            .submasters{
+                display: flex;
+                flex-direction: column;
+                color: gray;
+                gap: 5px;
+            }
+        }
+    }
+    .jiabaili{
+        display: flex;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        flex-direction: column;
+        gap: 8px;
+        justify-content: center;
+        align-items: center;
+        .upper{
+            height: 70px;
+            width: 70px;
+            border-radius: 50%;
+            background-color: gray;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .img{
+                height: 70px;
+                width: 70px;
+                object-fit: contain;
+                border-radius: 50%;
+                flex: 1;
+                display: flex;align-items: center;
+                justify-content: center;
+                font-size: 50px;
+            }
+        }
+        .middle{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .name{
+                font-size: 12px;
+            }
+            .email{
+                font-size: 12px;
+                color: lightgray;
+            }
+        }
+        .lower{
+            background-color: green;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px 0px;
+            cursor: pointer;
+        }
+    }
+}
