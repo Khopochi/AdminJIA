@@ -22,7 +22,7 @@ export const Sidebar = () => {
         </div>
         <div className="middle">
           <span className="name">JiaBaiLi Supermarket</span>
-          <span className="email">{user.firstname} {user.lastname}</span>
+          <span className="email">{user.username}</span>
         </div>
         <div className="lower">
           Visit website

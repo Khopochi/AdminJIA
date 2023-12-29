@@ -16,7 +16,7 @@ export const Login = () => {
     //habdkle digits only
     const [value, setValue] = useState('');
     const handleInputChange = (e) => {
-        setValue(e.target.value.replace(/[^0-9]/g, ''));
+        setValue(e.target.value);
         setError(false)
         setError2(false)
 
@@ -47,7 +47,7 @@ export const Login = () => {
 
         dispatch({type:"LOGIN_START"})
         const lodinData = {
-            phonenumber: value,
+            username: value,
             password: credentials.password
         }
         setLoader(true)
@@ -65,7 +65,8 @@ export const Login = () => {
 
             }else{
                 try{
-                    const res = await axios.post(baseurl+"user/login",lodinData)
+                    const res = await axios.post(baseurl+"admin/login",lodinData)
+                    console.log({response: res})
                     if(res.data.error){
                         if(res.data.error ===  "No user"){
                             setserver("Phonenumber does not exist")
@@ -110,11 +111,11 @@ export const Login = () => {
                 Sign In
             </div>
             <div className="fname phone">
-                <div className="name">Phone Number</div>
+                <div className="name">Username</div>
                 {(error || error2) && <div className="error">{server}</div>}
                 <div className="inputarea">
-                    <span>+265</span>
-                    <input type="text" maxLength={9} value={value} onChange={handleInputChange}  className="phoneinput" />
+                    <span>user</span>
+                    <input type="text" value={value} onChange={handleInputChange}  className="phoneinput" />
                 </div>
                 
             </div>

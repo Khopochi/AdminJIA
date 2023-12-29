@@ -3,6 +3,65 @@ $onHover: #E3242B;
 $amazongreen: #007185;
 $amazon: #f3d078;
 $amazonorange: #FF8F00;
+.categoriesHome{
+  position: relative;
+}
+.editt{
+  position: absolute;
+  left:0;
+  top:0;
+  height: 100%;
+  width: 100%;
+  // background-color: red;
+  display: flex;
+  // align-items: center;
+  justify-content: center;
+  z-index: 999;
+  .insideedit{
+    width: 25%;
+    height: 50%;
+    background-color: white;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    .insideheading{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .icon{
+        cursor: pointer;
+        font-size: 18px;
+      }
+      .insideword{
+        font-size: 18px;
+        font-weight: 500;
+      }
+    }
+    .inputinside{
+      padding: 5px 10px;
+      outline: none;
+    }
+    button{
+      padding: 5px;
+      cursor: pointer;
+      background-color: $amazongreen;
+      color: white;
+    }
+    .loaderbar{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-direction: column;
+    }
+    .error{
+      color: $onHover;
+      font-size: 13px;
+    }
+  }
+}
 .bold-header {
     font-weight: bold;
   }
