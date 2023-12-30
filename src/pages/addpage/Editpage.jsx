@@ -284,9 +284,11 @@ export const Editpage = () => {
                 setDeepCategory(term)
                 try{
                     if(term.length >= 1){
-                        const ResdeepCategories = await axios.get(baseurl+"deepcategory/search/"+term)
-                        setDeepCategories(ResdeepCategories.data)
-                        setOpenDeep(true)
+                        if(term.length >= 3){
+                            const ResdeepCategories = await axios.get(baseurl+"deepcategory/search2/"+term)
+                            setDeepCategories(ResdeepCategories.data)
+                            setOpenDeep(true)
+                        }
                     }else{
                         setOpenDeep(false)
                         setDeepCategories([])
@@ -685,7 +687,7 @@ export const Editpage = () => {
                                 <div className="containerList">
                                     {
                                         deepCategories.map((cat,index)=>(
-                                            <span onClick={()=>setActiveDeep(cat)} key={index}>{cat.name}</span>
+                                            <span onClick={()=>setActiveDeep(cat)} key={index}>{cat.name}, {cat.subcategoryName}, {cat.categoryName}</span>
                                         ))
                                     }
                                 </div>

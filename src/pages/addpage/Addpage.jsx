@@ -38,7 +38,9 @@ export const Addpage = () => {
         subcategoryid: undefined,
         deepcategoryid: undefined,
         discount: undefined,
-        weight: undefined
+        weight: undefined,
+        disc: true,
+        vat: true
     })
 
     //media upload
@@ -105,7 +107,20 @@ export const Addpage = () => {
         //Handle Input
         const handleChange = (e) => {
             setCreditials((prev) => ({...prev, [e.target.id]: e.target.value}))
-          }
+        }
+
+        const handleDisc = (item) => {
+            setCreditials((prev) => ({ ...prev, disc: item }));
+            setCreditials((prev) => ({ ...prev, discount: undefined }));
+                setone(false)
+                settwo(false)
+                setthree(false)
+          };
+
+          const handleVat = (item) => {
+            setCreditials((prev) => ({ ...prev, vat: item }));
+          } 
+          
 
           //handle description
           useEffect(()=>{
@@ -238,9 +253,11 @@ export const Addpage = () => {
                 setDeepCategory(term)
                 try{
                     if(term.length >= 1){
-                        const ResdeepCategories = await axios.get(baseurl+"deepcategory/search/"+term)
-                        setDeepCategories(ResdeepCategories.data)
-                        setOpenDeep(true)
+                        if(term.length >= 3){
+                            const ResdeepCategories = await axios.get(baseurl+"deepcategory/search2/"+term)
+                            setDeepCategories(ResdeepCategories.data)
+                            setOpenDeep(true)
+                        }
                     }else{
                         setOpenDeep(false)
                         setDeepCategories([])
@@ -484,7 +501,9 @@ export const Addpage = () => {
             if(previewImages.length >= 1){
                 handleUpload()
             }
-        },[previewImages])             
+        },[previewImages]) 
+        
+        console.log(credetials)
   return (
     <div className='addpage'>
         {false && <div className="loading">
@@ -548,8 +567,27 @@ export const Addpage = () => {
                             <span>MWK</span>
                             <input  value={value} onChange={handleInputChange}  placeholder='100000' type="text" />
                         </div>
-                        <div className="div">Discount</div>
+                    </div>
+                    <div className="description">
+                        
+                    </div>
+                </div>
+                <div className="productnamedescription">
+                    <div className="name">
+                        <div className="title">Discount</div>
+                        {isPrice && <div className="alert">Discount</div>}
                         <div className="discount">
+                            <div className="item">
+                                <div className="icon">{!credetials.disc && <FontAwesomeIcon onClick={()=>handleDisc(true)} icon={faSquare} />}{credetials.disc && <FontAwesomeIcon onClick={()=>handleUnClick(10)} icon={faSquareCheck} />}</div>
+                                <div className="word">Yes</div>
+                            </div>
+                            <div className="item">
+                                <div className="icon">{credetials.disc && <FontAwesomeIcon onClick={()=>handleDisc(false)} icon={faSquare} />}{!credetials.disc && <FontAwesomeIcon onClick={()=>handleUnClick(15)} icon={faSquareCheck} />}</div>
+                                <div className="word">No</div>
+                            </div>
+                        </div>
+                        {credetials.disc && <div className="div">Select %</div>}
+                        {credetials.disc && <div className="discount">
                             <div className="item">
                                 <div className="icon">{!one && <FontAwesomeIcon onClick={()=>handleDiscount(10)} icon={faSquare} />}{one && <FontAwesomeIcon onClick={()=>handleUnClick(10)} icon={faSquareCheck} />}</div>
                                 <div className="word">10</div>
@@ -561,6 +599,26 @@ export const Addpage = () => {
                             <div className="item">
                                 <div className="icon">{!three && <FontAwesomeIcon onClick={()=>handleDiscount(20)} icon={faSquare} />}{three && <FontAwesomeIcon onClick={()=>handleUnClick(20)} icon={faSquareCheck} />}</div>
                                 <div className="word">20</div>
+                            </div>
+                        </div>}
+
+                    </div>
+                    <div className="description">
+                        
+                    </div>
+                </div>
+                <div className="productnamedescription">
+                    <div className="name">
+                        <div className="title">VAT</div>
+                        {isPrice && <div className="alert">Discount</div>}
+                        <div className="discount">
+                            <div className="item">
+                                <div className="icon">{!credetials.vat && <FontAwesomeIcon onClick={()=>handleVat(true)} icon={faSquare} />}{credetials.vat && <FontAwesomeIcon onClick={()=>handleUnClick(10)} icon={faSquareCheck} />}</div>
+                                <div className="word">Yes</div>
+                            </div>
+                            <div className="item">
+                                <div className="icon">{credetials.vat && <FontAwesomeIcon onClick={()=>handleVat(false)} icon={faSquare} />}{!credetials.vat && <FontAwesomeIcon onClick={()=>handleUnClick(15)} icon={faSquareCheck} />}</div>
+                                <div className="word">No</div>
                             </div>
                         </div>
                     </div>
@@ -630,7 +688,7 @@ export const Addpage = () => {
                                 <div className="containerList">
                                     {
                                         deepCategories.map((cat,index)=>(
-                                            <span onClick={()=>setActiveDeep(cat)} key={index}>{cat.name}</span>
+                                            <span onClick={()=>setActiveDeep(cat)} key={index}>{cat.name}, {cat.subcategoryName}, {cat.categoryName}</span>
                                         ))
                                     }
                                 </div>

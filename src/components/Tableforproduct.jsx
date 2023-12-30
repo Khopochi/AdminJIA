@@ -59,6 +59,8 @@ export default function DataTable({rowss}) {
         </span>
       )
     },
+    { field: 'barcode', headerName: 'Barcode', width: 300 },
+
   ];
   
   return (
