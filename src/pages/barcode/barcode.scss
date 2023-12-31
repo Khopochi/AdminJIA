@@ -1,6 +1,22 @@
+$mainColor: #28231D;
+$onHover: #E3242B;
+$amazon: #f3d078;
+$link: rgb(0, 140, 255);
 .barcode{
     position: relative;
-    .anaotheritem{
+    .loaderb{
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.6); /* Black with 80% opacity */
+        z-index: 999;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .anotheritem1 {
         position: absolute;
         width: 50vw;
         height: 50vh;
@@ -10,62 +26,75 @@
         display: flex;
         flex-direction: column;
         gap: 10px;
-        .close{
+    
+        .close1 {
             display: flex;
             justify-content: space-between;
-            .add{
+            background-color: white;
+    
+            .add {
                 background-color: rgb(219, 214, 214);
-                    color: black;
-                    padding: 5px;
-                    border-radius: 2px;
-                    text-align: center;
-                    font-weight: 500;
-                    cursor: pointer;
+                color: black;
+                padding: 5px;
+                border-radius: 2px;
+                text-align: center;
+                font-weight: 500;
+                cursor: pointer;
             }
         }
-        .listitem{
+    
+        .listitem11 {
             display: flex;
             gap: 5px;
             align-items: center;
             gap: 10px;
             justify-content: space-between;
-            .wrapp{
+            background-color: white;
+    
+            .wrapp {
                 display: flex;
                 gap: 10px;
                 align-items: center;
+                background-color: white;
             }
-            .img{
+    
+            .img {
                 width: 5vw;
                 height: 10vh;
                 background-color: lightgray;
             }
-            .details{
-                .name{
+    
+            .details {
+                .name {
                     font-size: 14px;
                     font-weight: 500;
                 }
-                .price{
-                    .mwk{
+    
+                .price {
+                    .mwk {
                         font-size: 10px;
                     }
-                    .figure{
+    
+                    .figure {
                         font-size: 13px;
                     }
                 }
-                .quantity{
-                    .qt{
+    
+                .quantity {
+                    .qt {
                         font-size: 10px;
                     }
                 }
             }
-            .editadd{
+    
+            .editadd {
                 display: flex;
-                // margin-right: auto;
                 justify-content: flex-end;
                 flex-direction: column;
                 gap: 5px;
                 font-size: 10px;
-                .editt{
+    
+                .editt {
                     background-color: black;
                     color: white;
                     padding: 5px;
@@ -74,7 +103,8 @@
                     font-weight: 500;
                     cursor: pointer;
                 }
-                .add{
+    
+                .add {
                     background-color: rgb(219, 214, 214);
                     color: black;
                     padding: 5px;
@@ -82,11 +112,11 @@
                     text-align: center;
                     font-weight: 500;
                     cursor: pointer;
-
                 }
             }
         }
     }
+    
     .codee{
         padding-right: 10px;
         cursor: pointer;
@@ -96,7 +126,7 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: red;
+    background-color: $onHover;
     position: relative;
     .container{
         width: 600px;
@@ -118,10 +148,12 @@
             .code{
                 color: rgb(36, 35, 35);
                 flex: 1;
+                display: flex;
                 input{
                     border: none;
                     outline: none;
-                    width: 100%;
+                    flex: 1;
+                    // width: 100%;
                     
                 }
             }
@@ -131,4 +163,111 @@
             margin-top: 5px;
         }
     }
+}
+
+.modal {
+    // display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    // border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.close-modal {
+    cursor: pointer;
+    font-size: 24px;
+    color: #aaa;
+}
+
+.product-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.product-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 15px;
+}
+
+.product-details {
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.product-info {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 1px !important;
+    justify-content: center;
+}
+
+.product-price {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 1px;
+}
+
+.product-quantity {
+    font-size: 14px;
+    color: #555;
+}
+
+.edit-button {
+    background-color: $onHover;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-button:hover {
+    background-color: $mainColor;
+}
+
+.buttonarleadyexist{
+    background-color: $onHover;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
