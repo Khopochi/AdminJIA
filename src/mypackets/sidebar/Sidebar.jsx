@@ -8,10 +8,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 export const Sidebar = () => {
   const navigate = useNavigate()
   const {user} = useContext(AuthContext)
+  const deleteUserFromLocalStorage = () => {
+    localStorage.removeItem('jiabailiuser17082000111');
+    navigate("/login/")
+    // Optionally, you can perform additional actions after removing the user
+    // For example, redirecting to a login page or updating the state
+  };
   return (
     <div className='sidebar'>
       <div className="jiabaili">
@@ -54,6 +61,14 @@ export const Sidebar = () => {
           <div className="master">Payments</div>
         </div>
       </div>
+
+      <div className="item">
+        <div className="icon"><LogoutIcon/></div>
+        <div className="term">
+          <div onClick={()=>deleteUserFromLocalStorage()} className="master">Log out</div>
+        </div>
+      </div>
+
 
     </div>
   )

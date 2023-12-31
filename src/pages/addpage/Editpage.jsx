@@ -4,11 +4,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faArrowLeft, faBarcode, faCircleInfo, faCloudArrowUp, faLayerGroup, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { Editor } from "primereact/editor";
 import { useDropzone } from 'react-dropzone';
-import { faCheckCircle, faSquare, faSquareCheck } from '@fortawesome/free-regular-svg-icons';
+import { faCheckCircle, faSquare, faSquareCheck, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { BarLoader, BeatLoader, ClipLoader, FadeLoader } from 'react-spinners';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import baseurl from '../../ourapi';
+import parse from 'html-react-parser';
+
 
 export const Editpage = () => {
 
@@ -39,7 +41,10 @@ export const Editpage = () => {
         subcategoryid: undefined,
         deepcategoryid: undefined,
         discount: undefined,
-        weight: undefined
+        weight: undefined,
+        disc: true,
+        vat: true,
+        vatcode: undefined
     })
 
     const fetchProduct = async () => {
@@ -82,11 +87,14 @@ export const Editpage = () => {
         subcategoryid: fetchedData.subcategoryid,
         deepcategoryid: fetchedData.deepcategoryid,
         discount: fetchedData.discount,
-        weight: fetchedData.weight
+        weight: fetchedData.weight,
+        disc: fetchedData.disc,
+        vat: fetchedData.vat,
+        vatcode: fetchedData.vatcode
         // ... other fields
         };
     };
-
+    console.log(credetials)
     //media upload
     const onDrop = useCallback((acceptedFiles) => {
         // Check if the total number of selected files doesn't exceed 4
@@ -139,6 +147,7 @@ export const Editpage = () => {
         height: '100px',
         objectFit: 'cover',
         margin: '0 10px',
+        cursor: 'pointer',
       };
 
       //handle no characters on price
@@ -212,19 +221,19 @@ export const Editpage = () => {
                 setone(false)
                 setCreditials(prevCredentials => ({
                     ...prevCredentials,
-                    discount: undefined,
+                    discount: null,
                 }));
             }else if(id === 15){
                 settwo(false)
                 setCreditials(prevCredentials => ({
                     ...prevCredentials,
-                    discount: undefined,
+                    discount: null,
                 }));
             }else if(id === 20){
                 setthree(false)
                 setCreditials(prevCredentials => ({
                     ...prevCredentials,
-                    discount: undefined,
+                    discount: null,
                 }));
             }
           }
@@ -491,6 +500,7 @@ export const Editpage = () => {
                                     }else{
                                         try{
                                             const res = await axios.put(baseurl+"product/update/"+id, credetials)
+                                            // console.log({data: credetials})
                                             // setLOader(false)
                                             window.location.href = 'https://jiabaili.shop/viewproduct/'+id;
                                         }catch(err){
@@ -538,7 +548,30 @@ export const Editpage = () => {
                 handleUpload()
             }
         },[previewImages]) 
-        const [loader,setLOader] = useState(false)            
+        const [loader,setLOader] = useState(false)    
+        
+        const [selectedPickToEdit, setselectedpic] = useState("")
+
+        const deletePic = (img) => {
+            const updatedPhotos = credetials.photos.filter(photo => photo !== img);
+            setCreditials({ ...credetials, photos: updatedPhotos });
+        };
+
+
+        //handle disc
+        const handleDisc = (item) => {
+            setCreditials((prev) => ({ ...prev, disc: item }));
+            setCreditials((prev) => ({ ...prev, discount: undefined }));
+                setone(false)
+                settwo(false)
+                setthree(false)
+          };
+
+        //handle vat
+        const handleVat = (item) => {
+            setCreditials((prev) => ({ ...prev, vatcode: item }));
+          } 
+          
   return (
     <div className='addpage'>
         {loader && <div className="loaderb">
@@ -569,13 +602,37 @@ export const Editpage = () => {
                     </div>
                     <div className="description">
                         <div className="title">Deescription</div>
+                        <div className="previewdetails">
+                            {credetials.details ? parse(credetials.details) : " "}
+                        </div>
                         {isDesc && <div className="alert">Please fill description</div>}
-                        <Editor value={credetials.details} onTextChange={(e) => setDescription(e.htmlValue)} style={{ height: '150px' }} />
+                        <Editor value={description} onTextChange={(e) => setDescription(e.htmlValue)} style={{ height: '150px' }} />
                     </div>
                 </div>
                 <div className="productnamedescription">
                     <div className="name">
-                        <div className="title">Media{uploading && <ClipLoader color="#36d7b7" size={10} />}</div> 
+                        <div className="title">Product Images{uploading && <ClipLoader color="#36d7b7" size={10} />}</div> 
+                        {isMedia && <div className="alert">Please select photos</div>}
+                        <div style={previewContainerStyles}>
+                            {credetials.photos.map((image, index) => (
+                                <div key={index} className="imageproducts">
+                                    {(selectedPickToEdit === image) && <div className="onhoverfada">
+                                        <FontAwesomeIcon onClick={()=>deletePic(image)} className='mycan' icon={faTrashCan} />
+                                    </div>}
+                                        <img
+                                            src={"https://api.jiabaili.shop/api/photos/"+image}
+                                            alt={`Preview ${index + 1}`}
+                                            style={previewImageStyles}
+                                            onClick={()=>setselectedpic(image)}
+                                        />
+                                </div>
+                            ))}
+                        </div>
+                    </div>                  
+                </div>
+                <div className="productnamedescription">
+                    <div className="name">
+                        <div className="title">Change Images{uploading && <ClipLoader color="#36d7b7" size={10} />}</div> 
                         {isMedia && <div className="alert">Please select photos</div>}
                         {!(previewImages.length > 0) && <div {...getRootProps()} style={dropzoneStyles}>
                             <input {...getInputProps()} />
@@ -605,12 +662,33 @@ export const Editpage = () => {
                             <span>MWK</span>
                             <input  value={credetials.price} onChange={handleInputChange}  placeholder='100000' type="text" />
                         </div>
-                        <div className="div">Discount</div>
+                    </div>
+                    <div className="description">
+                        
+                    </div>
+                </div>
+                <div className="productnamedescription">
+                    <div className="name">
+                        <div className="title">Discount</div>
+                        {isPrice && <div className="alert">Discount</div>}
                         <div className="discount">
+                            <div className="item">
+                                <div className="icon">{!credetials.disc && <FontAwesomeIcon onClick={()=>handleDisc(true)} icon={faSquare} />}{credetials.disc && <FontAwesomeIcon  icon={faSquareCheck} />}</div>
+                                <div className="word">Yes</div>
+                            </div>
+                            <div className="item">
+                                <div className="icon">{credetials.disc && <FontAwesomeIcon onClick={()=>handleDisc(false)} icon={faSquare} />}{!credetials.disc && <FontAwesomeIcon  icon={faSquareCheck} />}</div>
+                                <div className="word">No</div>
+                            </div>
+                        </div>
+                        {credetials.disc && <div className="div">Select %</div>}
+                        {credetials.discount && <div className="div">Current discount {credetials.discount}%</div>}
+                        {credetials.disc && <div className="discount">
                             <div className="item">
                                 <div className="icon">{!one && <FontAwesomeIcon onClick={()=>handleDiscount(10)} icon={faSquare} />}{one && <FontAwesomeIcon onClick={()=>handleUnClick(10)} icon={faSquareCheck} />}</div>
                                 <div className="word">10</div>
                             </div>
+                            
                             <div className="item">
                                 <div className="icon">{!two && <FontAwesomeIcon onClick={()=>handleDiscount(15)} icon={faSquare} />}{two && <FontAwesomeIcon onClick={()=>handleUnClick(15)} icon={faSquareCheck} />}</div>
                                 <div className="word">15</div>
@@ -618,6 +696,30 @@ export const Editpage = () => {
                             <div className="item">
                                 <div className="icon">{!three && <FontAwesomeIcon onClick={()=>handleDiscount(20)} icon={faSquare} />}{three && <FontAwesomeIcon onClick={()=>handleUnClick(20)} icon={faSquareCheck} />}</div>
                                 <div className="word">20</div>
+                            </div>
+                        </div>}
+
+                    </div>
+                    <div className="description">
+                        
+                    </div>
+                </div>
+                <div className="productnamedescription">
+                    <div className="name">
+                        <div className="title">VAT</div>
+                        {isPrice && <div className="alert">Discount</div>}
+                        <div className="discount">
+                            <div className="item">
+                                <div className="icon">{!(credetials.vatcode === "A") && <FontAwesomeIcon onClick={()=>handleVat("A")} icon={faSquare} />}{(credetials.vatcode === "A") && <FontAwesomeIcon  icon={faSquareCheck} />}</div>
+                                <div className="word">A</div>
+                            </div>
+                            <div className="item">
+                                <div className="icon">{!(credetials.vatcode === "B") && <FontAwesomeIcon onClick={()=>handleVat("B")} icon={faSquare} />}{(credetials.vatcode === "B") && <FontAwesomeIcon  icon={faSquareCheck} />}</div>
+                                <div className="word">B</div>
+                            </div>
+                            <div className="item">
+                                <div className="icon">{!(credetials.vatcode === "C") && <FontAwesomeIcon onClick={()=>handleVat("C")} icon={faSquare} />}{(credetials.vatcode === "C") && <FontAwesomeIcon  icon={faSquareCheck} />}</div>
+                                <div className="word">C</div>
                             </div>
                         </div>
                     </div>

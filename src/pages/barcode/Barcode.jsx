@@ -78,7 +78,7 @@ export const Barcode = () => {
                         {
                             products.map((item,index)=>(
                                 <div key={index} class="product-item">
-                                    <img src={baseurl+"photos/"+item.photos[0]} />
+                                    <img src={"https://api.jiabaili.shop/api/photos/"+item.photos[0]} />
                                     <div class="product-details">
                                         <div class="product-info">
                                             <p class="product-price">{item.name}</p>

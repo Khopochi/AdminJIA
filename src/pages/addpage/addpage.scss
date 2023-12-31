@@ -371,3 +371,22 @@ $amazongreen: #007185;
         }
     }
 }
+.imageproducts{
+    position: relative;
+    .onhoverfada{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6); /* Black with 80% opacity */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        .mycan{
+            cursor: pointer;
+        }
+
+    }
+}

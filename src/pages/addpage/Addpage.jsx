@@ -40,7 +40,8 @@ export const Addpage = () => {
         discount: undefined,
         weight: undefined,
         disc: true,
-        vat: true
+        vat: true,
+        vatcode: "A"
     })
 
     //media upload
@@ -118,7 +119,7 @@ export const Addpage = () => {
           };
 
           const handleVat = (item) => {
-            setCreditials((prev) => ({ ...prev, vat: item }));
+            setCreditials((prev) => ({ ...prev, vatcode: item }));
           } 
           
 
@@ -613,12 +614,16 @@ export const Addpage = () => {
                         {isPrice && <div className="alert">Discount</div>}
                         <div className="discount">
                             <div className="item">
-                                <div className="icon">{!credetials.vat && <FontAwesomeIcon onClick={()=>handleVat(true)} icon={faSquare} />}{credetials.vat && <FontAwesomeIcon onClick={()=>handleUnClick(10)} icon={faSquareCheck} />}</div>
-                                <div className="word">Yes</div>
+                                <div className="icon">{!(credetials.vatcode === "A") && <FontAwesomeIcon onClick={()=>handleVat("A")} icon={faSquare} />}{(credetials.vatcode === "A") && <FontAwesomeIcon  icon={faSquareCheck} />}</div>
+                                <div className="word">A</div>
                             </div>
                             <div className="item">
-                                <div className="icon">{credetials.vat && <FontAwesomeIcon onClick={()=>handleVat(false)} icon={faSquare} />}{!credetials.vat && <FontAwesomeIcon onClick={()=>handleUnClick(15)} icon={faSquareCheck} />}</div>
-                                <div className="word">No</div>
+                                <div className="icon">{!(credetials.vatcode === "B") && <FontAwesomeIcon onClick={()=>handleVat("B")} icon={faSquare} />}{(credetials.vatcode === "B") && <FontAwesomeIcon  icon={faSquareCheck} />}</div>
+                                <div className="word">B</div>
+                            </div>
+                            <div className="item">
+                                <div className="icon">{!(credetials.vatcode === "C") && <FontAwesomeIcon onClick={()=>handleVat("C")} icon={faSquare} />}{(credetials.vatcode === "C") && <FontAwesomeIcon  icon={faSquareCheck} />}</div>
+                                <div className="word">C</div>
                             </div>
                         </div>
                     </div>

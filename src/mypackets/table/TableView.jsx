@@ -13,19 +13,30 @@ export const TableView = () => {
   const [deepcategories,  setDeepCategories] = useState({ id: 1, name: 'Loading...' })
   const [products,  setProducts] = useState({ id: 1, name: 'Loading...' })
   const fetchData = async () => {
-    const product = await axios.get(baseurl+"product/")
-    setProducts(product.data)
-    const cat = await axios.get(baseurl+"category/")
-    setCategories(cat.data)
-    const subcat = await axios.get(baseurl+"subcategory/")
-    setSubCategories(subcat.data)
-    const deepcat = await axios.get(baseurl+"deepcategory/")
-    setDeepCategories(deepcat.data)
-
-  }
-  useEffect(()=>{
-    fetchData()
-  },[])
+    try {
+      // Use Promise.all to perform multiple asynchronous actions concurrently
+      const [product, cat, subcat, deepcat] = await Promise.all([
+        axios.get(baseurl + "product/"),
+        axios.get(baseurl + "category/"),
+        axios.get(baseurl + "subcategory/"),
+        axios.get(baseurl + "deepcategory/"),
+      ]);
+  
+      // Set state after all asynchronous actions are completed
+      setProducts(product.data);
+      setCategories(cat.data);
+      setSubCategories(subcat.data);
+      setDeepCategories(deepcat.data);
+    } catch (error) {
+      // Handle errors if any of the requests fail
+      console.error("Error fetching data:", error);
+    }
+  };
+  
+  useEffect(() => {
+    fetchData();
+  }, []);
+  
   //True or False on what to display
   const [cat,setcat] = useState(false)
   const [subcat,setsubcat] = useState(false)
