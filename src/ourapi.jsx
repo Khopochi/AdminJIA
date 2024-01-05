@@ -1,3 +1,3 @@
-const baseurl = "http://localhost:8800/api/"
+const baseurl = "https://api.jiabaili.shop/api/"
 
 export default baseurl
