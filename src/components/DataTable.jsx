@@ -2,15 +2,16 @@ import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 
 const columns = [
-  { field: 'productName', headerName: 'Product name', width: 130 },
+  { field: 'productName', headerName: 'Product name', width: 300 },
   { field: 'price', headerName: 'Price', width: 130, type:'number' },
+  { field: 'shipping', headerName: 'Delivery Cost', width: 130, type:'number' },
   {
     field: 'quantity',
     headerName: 'Quantity',
     type: 'number',
     width: 90,
   },
-  { field: 'location', headerName: 'To', width: 130, },
+  { field: 'location', headerName: 'To', width: 300, },
   {
     field: 'total',
     headerName: 'Total',

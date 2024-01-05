@@ -93,7 +93,7 @@ const CartView = () => {
                     {data && <div className="vcimages">
                         {
                             data.newCart.map((img,index)=>(
-                                <img key={index} src={baseurl+"photos/"+img.productPhoto} />
+                                <img key={index} src={"https://api.jiabaili.shop/api/photos/"+img.productPhoto} />
                             ))
                         }
                        

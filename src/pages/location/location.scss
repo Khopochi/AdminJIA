@@ -1,0 +1,56 @@
+.locationsLocation{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 16px;
+    gap: 15px;
+    .heading{
+        font-size: 24px;
+        font-weight: 500;
+    }
+    .headingd{
+        border-bottom: 1px solid lightgray;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    form{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        .inputTop{
+            display: flex;
+            input{
+                flex: 1;
+                padding: 8px 20px;
+            }
+        }
+        .inputBottom{
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            .headingupper{
+                font-size: 18px;
+                font-weight: 500;
+            }  
+            .lowerdata{
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+                gap: 15px;
+                .singleitemlocation{
+                    display: flex;
+                    gap: 10px;
+                    align-items: center;
+                    .range{
+                        flex: 1;
+                        display: flex;
+                        align-items: right;
+                    }
+                    input{
+                        width: 80px;
+                        padding: 8px 2px;
+                    }
+                }
+            }
+        }
+    }
+}

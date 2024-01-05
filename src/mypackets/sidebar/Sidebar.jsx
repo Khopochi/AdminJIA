@@ -9,6 +9,7 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import LogoutIcon from '@mui/icons-material/Logout';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 
 export const Sidebar = () => {
   const navigate = useNavigate()
@@ -59,6 +60,13 @@ export const Sidebar = () => {
         <div className="icon"><PointOfSaleOutlinedIcon/></div>
         <div className="term">
           <div className="master">Payments</div>
+        </div>
+      </div>
+
+      <div className="item">
+        <div className="icon"><LocationOnOutlinedIcon/></div>
+        <div className="term">
+        <div onClick={()=>navigate("/locations/")} className="master">Locations</div>
         </div>
       </div>
 

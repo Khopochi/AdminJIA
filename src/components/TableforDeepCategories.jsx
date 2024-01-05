@@ -3,7 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import './tableforproduct.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faHandPointer, faPenToSquare, faTrashCan } from '@fortawesome/free-regular-svg-icons';
-import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faCircleExclamation, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { BeatLoader } from 'react-spinners';
 import baseurl from '../ourapi';
 import { useState } from 'react';
@@ -37,7 +37,7 @@ export default function DeepCategoryTable({rowss}) {
     },
     { field: 'edit', headerName: 'Edit', width: 130,
       renderCell: (params) => (
-        <span onClick={()=>setAndOpen(params.row._id,params.row.name)} className="edit">
+        <span onClick={()=>setAndOpen(params.row._id,params.row.name,params.row.subcategoryid,params.row.subcategoryName,params.row.categoryyid)} className="edit">
           <FontAwesomeIcon icon={faPenToSquare} />    
         </span>
       )
@@ -53,21 +53,47 @@ export default function DeepCategoryTable({rowss}) {
 
   
   const [credentials, setCredentials] = useState({
-    name: undefined
+    name: undefined,
+    subcategoryid: undefined,
+    categoryyid: undefined
   })
 
   const handleChange = (e) => {
     setCredentials((prev) => ({...prev, [e.target.id]: e.target.value}))
   }
 
+  const [categories, setCategories] = useState()
+  const [item,setitem] = useState()
+  const [value,setvalue] = useState("")
+  const handleChange2 = async (e) => {
+    setitem(e.target.value)
+    setvalue(e.target.value)
+    if(e.target.value.length >= 3){
+      try{
+        const ResdeepCategories = await axios.get(baseurl+"subcategory/search2/"+e.target.value)
+        setCategories(ResdeepCategories.data)
+        setopendeep(true)
+      }catch(err){
+  
+      }
+    }
+  }
+  console.log(categories)
+
   const [categoryid, setCategoryid] = useState()
   const [categoryname,setCategoryname] = useState()
   const [showForm, setShowForm] = useState(false)
+  const [mainCat,setMaincat] = useState()
 
-  const setAndOpen = (cid,name) => {
+
+  const setAndOpen = (cid,name,catgorid,cname,cmid) => {
     setShowForm(true)
     setCategoryid(cid)
     setCategoryname(name)
+    setMaincat(cname)
+    setCredentials((prev) => ({...prev, subcategoryid: catgorid}))
+    setCredentials((prev) => ({...prev, name: name}))
+    setCredentials((prev) => ({...prev, categoryyid: cmid}))
   }
 
   const process = async () => {
@@ -94,9 +120,13 @@ export default function DeepCategoryTable({rowss}) {
     setCategoryname(undefined)
     setCategoryid(undefined)
     setCredentials((prev) => ({...prev, name: undefined}))
+    setCredentials((prev) => ({...prev, subcategoryid: undefined}))
+    setCredentials((prev) => ({...prev, categoryyid: undefined}))
     setLoader(false)
     setDone(false)
     setError(false)
+    setvalue("")
+
     
   }
 
@@ -105,6 +135,18 @@ export default function DeepCategoryTable({rowss}) {
   const [error, setError] = useState(false)
 
   const {user} = useContext(AuthContext)
+  const [openDeep,setopendeep] = useState(false)
+  const handleclosing = () => {
+    setopendeep(false)
+  }
+  const setcatdeep = (id,iid,name) => {
+    setCredentials((prev) => ({...prev, subcategoryid: id}))
+    setCredentials((prev) => ({...prev, categoryyid: iid}))
+    setvalue(name)
+    setopendeep(false)
+  }
+
+  console.log(credentials)
   return (
     <div className='categoriesHome' style={{ height: 700, width: '100%' }}>
       {(showForm && user.username === "Stock Manager") && <div className="editt">
@@ -114,6 +156,20 @@ export default function DeepCategoryTable({rowss}) {
             <div onClick={()=>closeModal()} className="icon">X</div>
           </div>
           <input type="text" id='name' onChange={handleChange} placeholder={categoryname} className="inputinside" />
+          <input value={value} type="text" id='cate' onChange={handleChange2} placeholder={mainCat} className="inputinside" />
+          {openDeep && <div className="selectionList">
+                                <div className="headingList">
+                                    <div className="title">Select Deep Category</div>
+                                    <div className="icon"><FontAwesomeIcon onClick={()=>handleclosing()} icon={faXmark} /></div>
+                                </div>
+                                <div className="containerList">
+                                    {
+                                        categories.map((cat,index)=>(
+                                            <span onClick={()=>setcatdeep(cat._id,cat.categoryyid, cat.name)} key={index}>{cat.name}, {cat.categoryName}</span>
+                                        ))
+                                    }
+                                </div>
+                            </div>}
           {!(loader || done || error) && <button onClick={()=>process()}>Edit</button>}
           {loader && <div className="loaderbar">
               <BeatLoader color="hsla(42, 89%, 65%, 1)" />

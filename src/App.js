@@ -14,6 +14,7 @@ import CartView from './pages/cartview/Cartview';
 import { Editpage } from './pages/addpage/Editpage';
 import { useContext } from 'react';
 import { AuthContext } from './context/AuthContext';
+import Location from './pages/location/Location';
 
 function App() {
   const {user} = useContext(AuthContext)
@@ -28,6 +29,7 @@ function App() {
         <Route path='/' element={<Layout/>}>
             <Route index element={<Home/>} />
             <Route path='/addproduct/' element={<AddProduct/>} />
+            <Route path='/locations/' element={<Location/>} />
             <Route path='/addproduct/addpage/'>
               <Route path=':id' element={<Addpage/>} />
             </Route>
@@ -47,6 +49,7 @@ function App() {
         <Route path='/' element={<Login/>}>
             <Route index element={<Login/>} />
             <Route path='/addproduct/' element={<Login/>} />
+            <Route path='/locations/' element={<Location/>} />
             <Route path='/addproduct/addpage/'>
               <Route path=':id' element={<Login/>} />
             </Route>

@@ -69,16 +69,16 @@ export default function OrderTable({rowss}) {
     ];
     
   return (
-    <div style={{ height: 600, width: '100%' }}>
+    <div style={{ height: 1000, width: '100%' }}>
       <DataGrid
         rows={rowss}
         columns={columns}
         initialState={{
           pagination: {
-            paginationModel: { page: 0, pageSize: 10 },
+            paginationModel: { page: 0, pageSize: 20 },
           },
         }}
-        pageSizeOptions={[10, 20]}
+        pageSizeOptions={[20, 40]}
         checkboxSelection
       />
     </div>
