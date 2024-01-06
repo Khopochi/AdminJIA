@@ -44,7 +44,7 @@ export default function DeepCategoryTable({rowss}) {
     },
     { field: 'delete', headerName: 'Delete', width: 130,
       renderCell: (params) => (
-        <span className="delete">
+        <span onClick={()=>setOpen(params.row._id,params.row.name)} className="delete">
           <FontAwesomeIcon icon={faTrashCan} />    
         </span>
       )
@@ -147,6 +147,47 @@ export default function DeepCategoryTable({rowss}) {
   }
 
   console.log(credentials)
+
+
+    //delete code
+    const [showDelet, setDelet] = useState(false)
+    const [subcategoryid,setsubcategoryid] = useState()
+    const [subcategoryname, setsubctgoryname] = useState()
+    const [availablelist,setavailablelist] = useState()
+    const [showavailable,setshowavailable] = useState(false)
+    const setOpen = (idsub,subname) => {
+        setsubcategoryid(idsub)
+        setsubctgoryname(subname)
+        setDelet(true)
+    }
+    const closeDel = () => {
+      setDelet(false)
+      setsubcategoryid(undefined)
+      setsubctgoryname(undefined)
+      setavailablelist()
+      setError(false)
+      setLoader(false)
+      setDone(false)
+    }
+  
+    const processDelete = async () => {
+      setLoader(true)
+      try{
+        const res = await axios.delete(baseurl+"deepcategory/deleteDeepcategory/"+subcategoryid)
+        if(res.data.deepCategories){
+          setLoader(false)
+          setavailablelist(res.data.deepCategories)
+          setshowavailable(true)
+          setError(true)
+        }else{
+          setDone(true)
+          setLoader(false)
+        }
+      }catch(err){
+  
+      }
+    }
+    console.log(subcategoryid)
   return (
     <div className='categoriesHome' style={{ height: 700, width: '100%' }}>
       {(showForm && user.username === "Stock Manager") && <div className="editt">
@@ -181,6 +222,48 @@ export default function DeepCategoryTable({rowss}) {
           {error && <div className="loaderbar error">
              <FontAwesomeIcon icon={faCircleExclamation} />
              Error, Duplicate Category
+          </div>}
+
+
+        </div>
+      </div>}
+      {(showDelet && user.username === "Stock Manager") && <div className="editt">
+        <div className="insideedit">
+          <div className="insideheading">
+            <div className="insideword">Delete {subcategoryname}? {categoryname}</div>
+            <div onClick={()=>closeDel()} className="icon">X</div>
+          </div>
+          {openDeep && <div className="selectionList">
+                                <div className="headingList">
+                                    <div className="title">Select Deep Category</div>
+                                    <div className="icon"><FontAwesomeIcon onClick={()=>closeDel()} icon={faXmark} /></div>
+                                </div>
+                                <div className="containerList">
+                                    {
+                                        categories.map((cat,index)=>(
+                                            <span onClick={()=>setcatdeep(cat._id, cat.name)} key={index}>{cat.name}</span>
+                                        ))
+                                    }
+                                </div>
+                            </div>}
+          {!(loader || done || error) && <button className='button' onClick={()=>processDelete()}>Delete</button>}
+          {loader && <div className="loaderbar">
+              <BeatLoader color="hsla(42, 89%, 65%, 1)" />
+          </div>}
+          {done && <div className="loaderbar">
+             <FontAwesomeIcon icon={faCheckCircle} />
+             Done
+          </div>}
+          {error && <div className="loaderbar error">
+             <FontAwesomeIcon icon={faCircleExclamation} />
+             Delete failed, Products exist exist
+          </div>}
+          {(showavailable && availablelist)  && <div className="availablelists">
+                  {
+                    availablelist.map((item,index)=>(
+                      <p key={index}>{index + 1}. {item.name} - {item.barcode}</p>
+                    ))
+                  }
           </div>}
 
 

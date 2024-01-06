@@ -19,7 +19,7 @@ $amazonorange: #FF8F00;
   z-index: 999;
   .insideedit{
     width: 25%;
-    height: 50%;
+    min-height: 50%;
     background-color: white;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     padding: 16px;
@@ -49,6 +49,13 @@ $amazonorange: #FF8F00;
       cursor: pointer;
       background-color: $amazongreen;
       color: white;
+    }
+    .button{
+      padding: 5px;
+      cursor: pointer;
+      background-color: $onHover;
+      color: white;
+      border: none;
     }
     .loaderbar{
       display: flex;
@@ -142,4 +149,11 @@ $amazonorange: #FF8F00;
           }
       }
   }
+}
+
+.availablelists{
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-size: 13px;
 }
