@@ -50,7 +50,7 @@ export const Barcode = () => {
 
     const handleKeyPress = (e) => {
         // Check if the 'Enter' key is pressed
-        if (e.key === 'Enter' && barcode.length > 10) {
+        if (e.key === 'Enter' && barcode.length > 1) {
             nextpage();
         }
     };
