@@ -180,6 +180,7 @@ export default function SubCategoryTable({rowss}) {
         setError(true)
       }else{
         setDone(true)
+        setLoader(false)
       }
     }catch(err){
 
