@@ -579,11 +579,11 @@ export const Addpage = () => {
                         {isPrice && <div className="alert">Discount</div>}
                         <div className="discount">
                             <div className="item">
-                                <div className="icon">{!credetials.disc && <FontAwesomeIcon onClick={()=>handleDisc(true)} icon={faSquare} />}{credetials.disc && <FontAwesomeIcon onClick={()=>handleUnClick(10)} icon={faSquareCheck} />}</div>
+                                <div className="icon">{!credetials.disc && <FontAwesomeIcon onClick={()=>handleDisc(true)} icon={faSquare} />}{credetials.disc && <FontAwesomeIcon  icon={faSquareCheck} />}</div>
                                 <div className="word">Yes</div>
                             </div>
                             <div className="item">
-                                <div className="icon">{credetials.disc && <FontAwesomeIcon onClick={()=>handleDisc(false)} icon={faSquare} />}{!credetials.disc && <FontAwesomeIcon onClick={()=>handleUnClick(15)} icon={faSquareCheck} />}</div>
+                                <div className="icon">{credetials.disc && <FontAwesomeIcon onClick={()=>handleDisc(false)} icon={faSquare} />}{!credetials.disc && <FontAwesomeIcon  icon={faSquareCheck} />}</div>
                                 <div className="word">No</div>
                             </div>
                         </div>
