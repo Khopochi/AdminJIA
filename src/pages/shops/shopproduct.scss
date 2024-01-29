@@ -1,0 +1,11 @@
+.shopd{
+    width: 100%;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    .shopupper{
+        font-size: 18px;
+        font-weight: 500;
+    }
+}

@@ -4,101 +4,46 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faArrowLeft, faBarcode, faCircleInfo, faCloudArrowUp, faLayerGroup, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { Editor } from "primereact/editor";
 import { useDropzone } from 'react-dropzone';
-import { faCheckCircle, faSquare, faSquareCheck, faTrashCan } from '@fortawesome/free-regular-svg-icons';
+import { faCheckCircle, faSquare, faSquareCheck } from '@fortawesome/free-regular-svg-icons';
 import { BarLoader, BeatLoader, ClipLoader, FadeLoader } from 'react-spinners';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import baseurl from '../../ourapi';
-import parse from 'html-react-parser';
 
-
-export const Editpage = () => {
-
+export const WarehousePage = () => {
     //navigation
     const navigation = useNavigate()
     const {id} = useParams() 
     //desription input
-    const [description, setDescription] = useState('');
+    const [description, setDescription] = useState('To be changed');
     const [previewImages, setPreviewImages] = useState([]);
     const [Images, setImages] = useState([]);
     const [uploading, setUploading] = useState(false)
-    const [product,setProduct] = useState()
 
     //credetials for product
     const [credetials, setCreditials] = useState({
         name: '',
-        details: '',
+        barcode: id,
+        details: 'to be changed',
         searchtem: [],
         brand: undefined,
         material: undefined,
         color: undefined,
         producttype: undefined,
         appearance: undefined,
-        price: undefined,
+        price: 10,
         photos: [],
         quantity: undefined,
-        categoryid: undefined,
-        subcategoryid: undefined,
-        deepcategoryid: undefined,
+        categoryid: "6579529137e8cd6092d11d0a",
+        subcategoryid: "6579ae4f37e8cd6092d1307d",
+        deepcategoryid: "6579a8b237e8cd6092d1303c",
         discount: undefined,
-        weight: undefined,
-        citymall: undefined,
-        gateway: undefined,
+        weight: 1,
         disc: true,
         vat: true,
-        vatcode: undefined
+        vatcode: "A"
     })
 
-    const fetchProduct = async () => {
-        const fetchedData = await axios.get(baseurl+"product/getsingleproduct/"+id)
-        if(fetchedData.data.error === "Internal Server Error"){
-
-        }else{
-            const updatedCredentials = updateCredentialsWithFetchedData(credetials, fetchedData.data);
-
-                // Update the state with the new credentials
-                setCreditials(updatedCredentials);
-                // console.log(updatedCredentials)
-        }
-        const res = await axios.get(baseurl+"deepcategory/getSingleDeepcategory/"+fetchedData.data.deepcategoryid)
-        setDeepCategory(res.data.name)
-        console.log(res.data.name)
-
-    }
-    useEffect(()=>{
-        fetchProduct()
-    },[])
-    console.log(credetials)
-    // Assume this function is used to update credentials with fetched data
-    const updateCredentialsWithFetchedData = (currentCredentials, fetchedData) => {
-        return {
-        ...currentCredentials,
-        // Update each field with the corresponding value from fetchedData
-        name: fetchedData.name,
-        details: fetchedData.details,
-        brand: fetchedData.brand,
-        searchtem: fetchedData.searchtem,
-        material: fetchedData.material,
-        color: fetchedData.color,
-        producttype: fetchedData.producttype,
-        appearance: fetchedData.appearance,
-        price: fetchedData.price,
-        photos: fetchedData.photos,
-        quantity: fetchedData.quantity,
-        categoryid: fetchedData.categoryid,
-        subcategoryid: fetchedData.subcategoryid,
-        deepcategoryid: fetchedData.deepcategoryid,
-        discount: fetchedData.discount,
-        weight: fetchedData.weight,
-        disc: fetchedData.disc,
-        vat: fetchedData.vat,
-        vatcode: fetchedData.vatcode,
-        citymall: fetchedData.citymall,
-        gateway: fetchedData.gateway
-        // ... other fields
-        };
-    };
-    console.log(credetials)
     //media upload
     const onDrop = useCallback((acceptedFiles) => {
         // Check if the total number of selected files doesn't exceed 4
@@ -151,12 +96,11 @@ export const Editpage = () => {
         height: '100px',
         objectFit: 'cover',
         margin: '0 10px',
-        cursor: 'pointer',
       };
 
       //handle no characters on price
          //habdkle digits only
-        const [value, setValue] = useState();
+        const [value, setValue] = useState(10);
         const handleInputChange = (e) => {
             setValue(e.target.value.replace(/[^0-9]/g, ''));
         };
@@ -164,7 +108,20 @@ export const Editpage = () => {
         //Handle Input
         const handleChange = (e) => {
             setCreditials((prev) => ({...prev, [e.target.id]: e.target.value}))
-          }
+        }
+
+        const handleDisc = (item) => {
+            setCreditials((prev) => ({ ...prev, disc: item }));
+            setCreditials((prev) => ({ ...prev, discount: undefined }));
+                setone(false)
+                settwo(false)
+                setthree(false)
+          };
+
+          const handleVat = (item) => {
+            setCreditials((prev) => ({ ...prev, vatcode: item }));
+          } 
+          
 
           //handle description
           useEffect(()=>{
@@ -225,28 +182,24 @@ export const Editpage = () => {
                 setone(false)
                 setCreditials(prevCredentials => ({
                     ...prevCredentials,
-                    discount: null,
+                    discount: undefined,
                 }));
             }else if(id === 15){
                 settwo(false)
                 setCreditials(prevCredentials => ({
                     ...prevCredentials,
-                    discount: null,
+                    discount: undefined,
                 }));
             }else if(id === 20){
                 setthree(false)
                 setCreditials(prevCredentials => ({
                     ...prevCredentials,
-                    discount: null,
+                    discount: undefined,
                 }));
             }
           }
           //HANDLE QUANTITY
             const [valueQ, setValueQ] = useState();
-            const [valueT, setValueT] = useState();
-            const [valueF, seFValueF] = useState();
-
-
             const handleInputChangeQ = (e) => {
                 setValueQ(e.target.value.replace(/[^0-9]/g, ''));
             };
@@ -262,43 +215,6 @@ export const Editpage = () => {
                     quantity: intValue,
                 }));            
             },[valueQ])
-
-            const handleInputChangeT = (e) => {
-                setValueT(e.target.value.replace(/[^0-9]/g, ''));
-            };
-            useEffect(()=>{
-                let intValue = undefined;
-            
-                if (valueT !== "" && !isNaN(valueT)) {
-                    intValue = parseInt(valueT, 10);
-                }
-
-                if(intValue <= (credetials.quantity - credetials.gateway)){
-                    setCreditials(prevCredentials => ({
-                        ...prevCredentials,
-                        citymall: intValue,
-                    }));
-                }            
-            },[valueT])
-
-            const handleInputChangeF = (e) => {
-                seFValueF(e.target.value.replace(/[^0-9]/g, ''));
-            };
-            useEffect(()=>{
-                let intValue = undefined;
-            
-                if (valueF !== "" && !isNaN(valueF)) {
-                    intValue = parseInt(valueF, 10);
-                }
-
-                if(intValue <= (credetials.quantity - credetials.citymall)){
-                    setCreditials(prevCredentials => ({
-                        ...prevCredentials,
-                        gateway: intValue,
-                    })); 
-                } 
-                       
-            },[valueF])
 
             //HANDLE SEARCH TERMS
             const handleInputSearch = (e) => {
@@ -514,7 +430,6 @@ export const Editpage = () => {
 
          //continue funtion
         const onContinue = async () => {
-            setLOader(true)
             if (credetials?.name?.length <= 0) {
                 setIsTitle(true);
             }else{
@@ -543,14 +458,9 @@ export const Editpage = () => {
                                     if(!credetials?.weight){
                                         setIsWeight(true)
                                     }else{
-                                        try{
-                                            const res = await axios.put(baseurl+"product/update/"+id, credetials)
-                                            // console.log({data: credetials})
-                                            // setLOader(false)
-                                            window.location.href = 'https://jiabaili.shop/viewproduct/'+id;
-                                        }catch(err){
-                                            setLOader(true)
-                                        }
+                                        const credentilas = credetials
+                                        const previewAttributes = previewImages.map(image => image.preview);
+                                        navigation("/addproduct/preview/", {state: {credentilas,previewAttributes}})
                                     }
                                 }
                             }
@@ -559,7 +469,7 @@ export const Editpage = () => {
                 }
             }         
         }
-        // console.log(previewImages)
+        console.log(previewImages)
         const uttl = "https://api.jiabaili.shop/uploadd"
         //upload images
         const handleUpload = async () => {
@@ -593,35 +503,10 @@ export const Editpage = () => {
                 handleUpload()
             }
         },[previewImages]) 
-        const [loader,setLOader] = useState(false)    
         
-        const [selectedPickToEdit, setselectedpic] = useState("")
-
-        const deletePic = (img) => {
-            const updatedPhotos = credetials.photos.filter(photo => photo !== img);
-            setCreditials({ ...credetials, photos: updatedPhotos });
-        };
-
-
-        //handle disc
-        const handleDisc = (item) => {
-            setCreditials((prev) => ({ ...prev, disc: item }));
-            setCreditials((prev) => ({ ...prev, discount: undefined }));
-                setone(false)
-                settwo(false)
-                setthree(false)
-          };
-
-        //handle vat
-        const handleVat = (item) => {
-            setCreditials((prev) => ({ ...prev, vatcode: item }));
-          } 
-          
+        console.log(credetials)
   return (
     <div className='addpage'>
-        {loader && <div className="loaderb">
-            <BeatLoader color="hsla(42, 89%, 65%, 1)" />
-        </div>}
         {false && <div className="loading">
             <div className="containerr">
                 {true && <><BeatLoader color="hsla(168, 45%, 2%, 1)" />
@@ -635,7 +520,7 @@ export const Editpage = () => {
         </div>}
         <div className="header">
             <div className="icon"><FontAwesomeIcon icon={faArrowLeft} /></div>
-            <div className='title'>Edit product</div>
+            <div className='title'>WareHouse - Add product</div>
         </div>
         <div className="container">
             <div className="left">
@@ -643,41 +528,17 @@ export const Editpage = () => {
                     <div className="name">
                         <div className="title">Title</div>
                         {isTitle && <div className="alert">Please fill title</div>}
-                        <input id='name' value={credetials?.name} onChange={handleChange} placeholder='Rice cooker' type="text" />
+                        <input id='name' onChange={handleChange} placeholder='Rice cooker' type="text" />
                     </div>
                     <div className="description">
                         <div className="title">Deescription</div>
-                        <div className="previewdetails">
-                            {credetials.details ? parse(credetials.details) : " "}
-                        </div>
                         {isDesc && <div className="alert">Please fill description</div>}
                         <Editor value={description} onTextChange={(e) => setDescription(e.htmlValue)} style={{ height: '150px' }} />
                     </div>
                 </div>
                 <div className="productnamedescription">
                     <div className="name">
-                        <div className="title">Product Images{uploading && <ClipLoader color="#36d7b7" size={10} />}</div> 
-                        {isMedia && <div className="alert">Please select photos</div>}
-                        <div style={previewContainerStyles}>
-                            {credetials.photos.map((image, index) => (
-                                <div key={index} className="imageproducts">
-                                    {(selectedPickToEdit === image) && <div className="onhoverfada">
-                                        <FontAwesomeIcon onClick={()=>deletePic(image)} className='mycan' icon={faTrashCan} />
-                                    </div>}
-                                        <img
-                                            src={"https://api.jiabaili.shop/api/photos/"+image}
-                                            alt={`Preview ${index + 1}`}
-                                            style={previewImageStyles}
-                                            onClick={()=>setselectedpic(image)}
-                                        />
-                                </div>
-                            ))}
-                        </div>
-                    </div>                  
-                </div>
-                <div className="productnamedescription">
-                    <div className="name">
-                        <div className="title">Change Images{uploading && <ClipLoader color="#36d7b7" size={10} />}</div> 
+                        <div className="title">Media{uploading && <ClipLoader color="#36d7b7" size={10} />}</div> 
                         {isMedia && <div className="alert">Please select photos</div>}
                         {!(previewImages.length > 0) && <div {...getRootProps()} style={dropzoneStyles}>
                             <input {...getInputProps()} />
@@ -705,7 +566,7 @@ export const Editpage = () => {
                         {isPrice && <div className="alert">Please enter price</div>}
                         <div className="pricediv">
                             <span>MWK</span>
-                            <input  value={credetials.price} onChange={handleInputChange}  placeholder='100000' type="text" />
+                            <input  value={value} onChange={handleInputChange}  placeholder='100000' type="text" />
                         </div>
                     </div>
                     <div className="description">
@@ -727,13 +588,11 @@ export const Editpage = () => {
                             </div>
                         </div>
                         {credetials.disc && <div className="div">Select %</div>}
-                        {credetials.discount && <div className="div">Current discount {credetials.discount}%</div>}
                         {credetials.disc && <div className="discount">
                             <div className="item">
                                 <div className="icon">{!one && <FontAwesomeIcon onClick={()=>handleDiscount(10)} icon={faSquare} />}{one && <FontAwesomeIcon onClick={()=>handleUnClick(10)} icon={faSquareCheck} />}</div>
                                 <div className="word">10</div>
                             </div>
-                            
                             <div className="item">
                                 <div className="icon">{!two && <FontAwesomeIcon onClick={()=>handleDiscount(15)} icon={faSquare} />}{two && <FontAwesomeIcon onClick={()=>handleUnClick(15)} icon={faSquareCheck} />}</div>
                                 <div className="word">15</div>
@@ -776,17 +635,9 @@ export const Editpage = () => {
                     <div className="name">
                         <div className="title">Inventory</div>
                         {isQuantity && <div className="alert">Please enter quantity</div>}
-                        <div className="pricediv lol">
+                        <div className="pricediv">
                             <span>Quantity</span>
-                            <input value={credetials.quantity} onChange={handleInputChangeQ}  placeholder='250' type="text" />
-                        </div>
-                        <div className="pricediv lol">
-                            <span>City Mall</span>
-                            <input value={credetials.citymall} onChange={handleInputChangeT}  placeholder='250' type="text" />
-                        </div>
-                        <div className="pricediv lol">
-                            <span>Gateway </span>
-                            <input value={credetials.gateway} onChange={handleInputChangeF}  placeholder='250' type="text" />
+                            <input value={valueQ} onChange={handleInputChangeQ}  placeholder='250' type="text" />
                         </div>
                         <div className="div">Discount</div>
                         <div className="discount">
@@ -809,7 +660,7 @@ export const Editpage = () => {
                         <div className="title">Search words</div>
                         <div className="pricediv">
                             <span>Separate by comma</span>
-                            <input value={credetials.searchtem.join(',')} onChange={handleInputSearch} placeholder='Rice cooker,rice,mpunga' type="text" />
+                            <input onChange={handleInputSearch} placeholder='Rice cooker,rice,mpunga' type="text" />
                         </div>
                         <div className="discount">
                             <div className="item">
@@ -833,7 +684,7 @@ export const Editpage = () => {
                         {isDeep && <div className="alert1">Please select category</div>}
                         <div className="pricediv">
                             <span><FontAwesomeIcon icon={faLayerGroup} /></span>                         
-                            <input value={deepcategory} onChange={handleChangeDeep} placeholder='search deep category' type="text" />
+                            <input value={deepcategory || ''} onChange={handleChangeDeep} placeholder='search deep category' type="text" />
                             {openDeep && <div className="selectionList">
                                 <div className="headingList">
                                     <div className="title">Select Deep Category</div>
@@ -858,7 +709,7 @@ export const Editpage = () => {
                         <div className="wordtitle">Brand</div>
                         <div className="pricediv">
                             <span><FontAwesomeIcon onClick={()=>setOpenBrand(true)} icon={faAngleDown} /></span>                         
-                            <input value={credetials.brand} placeholder={credetials.brand || "Select Brand"} type="text" />
+                            <input placeholder={credetials.brand || "Select Brand"} type="text" />
                             {openBrand && <div className="selectionList">
                                 <div className="headingList">
                                     <div className="title">Select Brand</div>
@@ -877,7 +728,7 @@ export const Editpage = () => {
                         <div className="wordtitle">Color</div>
                         <div className="pricediv">
                             <span><FontAwesomeIcon onClick={()=>setOpenColor(true)} icon={faAngleDown} /></span>                         
-                            <input value={credetials.color} placeholder={credetials.color || "Select Color"} type="text" />
+                            <input placeholder={credetials.color || "Select Color"} type="text" />
                             {openColor && <div className="selectionList">
                                 <div className="headingList">
                                     <div className="title">Select Color</div>
@@ -896,7 +747,7 @@ export const Editpage = () => {
                         <div className="wordtitle">Material</div>
                         <div className="pricediv">
                             <span><FontAwesomeIcon onClick={()=>setOpenMaterial(true)} icon={faAngleDown} /></span>                         
-                            <input value={credetials.material} placeholder={credetials.material || "Select Material"} type="text" />
+                            <input placeholder={credetials.material || "Select Material"} type="text" />
                             {openMaterial && <div className="selectionList">
                                 <div className="headingList">
                                     <div className="title">Select Material</div>
@@ -915,7 +766,7 @@ export const Editpage = () => {
                         <div className="wordtitle">Type</div>
                         <div className="pricediv">
                             <span><FontAwesomeIcon onClick={()=>setOpenType(true)} icon={faAngleDown} /></span>                         
-                            <input value={credetials.producttype} placeholder={credetials.producttype || "Select Type"} type="text" />
+                            <input placeholder={credetials.producttype || "Select Type"} type="text" />
                             {openType && <div className="selectionList">
                                 <div className="headingList">
                                     <div className="title">Select Type</div>
@@ -934,7 +785,7 @@ export const Editpage = () => {
                         <div className="wordtitle">Appearance</div>
                         <div className="pricediv">
                             <span><FontAwesomeIcon onClick={()=>setOpenAppearance(true)} icon={faAngleDown} /></span>                         
-                            <input value={credetials.appearance} placeholder={credetials.appearance || "Select Appearance"} type="text" />
+                            <input placeholder={credetials.appearance || "Select Appearance"} type="text" />
                             {openAppearance && <div className="selectionList">
                                 <div className="headingList">
                                     <div className="title">Select Type</div>
@@ -962,7 +813,7 @@ export const Editpage = () => {
                         {isWeight && <div className="alert1">Please enter weight</div>}
                         <div className="pricediv">
                             <span>KGs</span>                         
-                            <input  value={credetials.weight || ""} onChange={handleInputChangew} placeholder='25' type="text" />
+                            <input value={valuew || ""} onChange={handleInputChangew} placeholder='25' type="text" />
                         </div>
                     </div>
                     <div className="description">  
@@ -970,17 +821,17 @@ export const Editpage = () => {
             </div>
             <div className="productnamedescription">
                     <div className="name">
-                        <div className="title">Product ID</div>
+                        <div className="title">Barcode</div>
                         <div className="buttonn">
                             <span className="icon"><FontAwesomeIcon icon={faBarcode} /></span>
                             <span className="word">{id}</span>
                         </div>
                     </div>
                     <div className="name">
-                        <div className="title">Update</div>
+                        <div className="title">Upload</div>
                         <div onClick={()=>onContinue()}  className="button">
                             <span className="icon"><FontAwesomeIcon icon={faCloudArrowUp} /></span>
-                            <span className="word">Update</span>
+                            <span className="word">Continue</span>
                         </div>
                     </div>
                     <div className="description">  

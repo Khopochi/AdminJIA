@@ -47,7 +47,7 @@ export const Addpage = () => {
     //media upload
     const onDrop = useCallback((acceptedFiles) => {
         // Check if the total number of selected files doesn't exceed 4
-        if (previewImages.length + acceptedFiles.length <= 4) {
+        if (previewImages.length + acceptedFiles.length <= 1000) {
           const newPreviewImages = acceptedFiles.map(file => Object.assign(file, {
             preview: URL.createObjectURL(file),
           }));
@@ -470,7 +470,8 @@ export const Addpage = () => {
             }         
         }
         console.log(previewImages)
-        const uttl = "https://api.jiabaili.shop/uploadd"
+        // const uttl = "https://api.jiabaili.shop/uploadd"
+        const uttl = "http://localhost:8080/uploadd"
         //upload images
         const handleUpload = async () => {
             setUploading(true)

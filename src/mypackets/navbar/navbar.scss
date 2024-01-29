@@ -10,6 +10,7 @@ $red: red;
         display: flex;
         gap: 5px;
         align-items: center;
+        cursor: pointer;
         .icon{
             background-color: $red;
             padding: 5px;

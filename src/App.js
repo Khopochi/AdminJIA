@@ -15,6 +15,9 @@ import { Editpage } from './pages/addpage/Editpage';
 import { useContext } from 'react';
 import { AuthContext } from './context/AuthContext';
 import Location from './pages/location/Location';
+import Shopproduct from './pages/shops/Shopproduct';
+import { Warehouse } from './pages/barcode/Warehouse';
+import { WarehousePage } from './pages/addpage/Wareadd';
 
 function App() {
   const {user} = useContext(AuthContext)
@@ -30,6 +33,7 @@ function App() {
             <Route index element={<Home/>} />
             <Route path='/addproduct/' element={<AddProduct/>} />
             <Route path='/locations/' element={<Location/>} />
+            <Route path='/warehouse/' element={<Warehouse/>} />
             <Route path='/addproduct/addpage/'>
               <Route path=':id' element={<Addpage/>} />
             </Route>
@@ -41,6 +45,13 @@ function App() {
             <Route path='/orders/single/'>
               <Route path=':id' element={<CartView/>} />
             </Route>
+            <Route path='/shop/'>
+              <Route path=':id' element={<Shopproduct/>} />
+            </Route>
+            <Route path='/addwarehouse/'>
+              <Route path=':id' element={<WarehousePage/>} />
+            </Route>
+
         </Route>
       </Routes>}
       {!user && <Routes>
