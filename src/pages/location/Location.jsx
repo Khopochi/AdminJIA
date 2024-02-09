@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import './location.scss'
+import axios from 'axios';
+import baseurl from '../../ourapi';
 
 const Location = () => {
     const [locations, setLocations] = useState({
@@ -44,7 +46,16 @@ const Location = () => {
         }
       };
 
-        console.log(locations)
+        const addLocation = async () => {
+          const res = await axios.post(baseurl+"shipping", locations)
+          console.log("Clicked")
+
+          if(res.data.location){
+          // window.location.reload();
+          console.log("Done")
+          }
+          
+        }
   return (
     <div className='locationsLocation'>
         <div className="heading">Add Location</div>
@@ -90,6 +101,7 @@ const Location = () => {
                 ))}
             </div>
         </div>
+        <span className='button' onClick={()=>addLocation()}>Add Location</span>
 
       </form>
     </div>

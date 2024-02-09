@@ -31,7 +31,7 @@ export default function OrderTable({rowss}) {
     }
     
     const columns = [
-      { field: 'orderid', headerName: 'Order ID', width: 200, },
+      { field: '_id', headerName: 'Order ID', width: 300, },
       { field: 'userName', headerName: 'Customer Name', width: 150, },
       { field: 'userPhoneNumber', headerName: 'Phone', width: 150, },
       { field: 'numberOfGoods', headerName: 'Goods', width: 90, type:'number' },

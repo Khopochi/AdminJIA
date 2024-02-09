@@ -1,9 +1,17 @@
+$amazongreen: #007185;
 .locationsLocation{
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     padding: 16px;
     gap: 15px;
+    .button{
+        padding: 8px;
+        background-color: $amazongreen;
+        color: white;
+        cursor: pointer;
+        font-weight: 500;
+    }
     .heading{
         font-size: 24px;
         font-weight: 500;
