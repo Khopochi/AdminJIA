@@ -14,6 +14,14 @@ import parse from 'html-react-parser';
 
 export const Editpage = () => {
 
+    const formatCurrency = (value) => {
+        return new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'MWK',
+        }).format(value);
+      };
+      
+
     //navigation
     const navigation = useNavigate()
     const {id} = useParams() 
@@ -23,6 +31,25 @@ export const Editpage = () => {
     const [Images, setImages] = useState([]);
     const [uploading, setUploading] = useState(false)
     const [product,setProduct] = useState()
+
+    const [initailPrice, setInitialPrice] = useState()
+    const [history, setHistory] = useState()
+
+    const [editDate, setEditDate] = useState("");
+
+                // Function to format the date as "24 September, 2023"
+                const formatDate = (date) => {
+                  const options = { day: "numeric", month: "long", year: "numeric" };
+                  return new Date(date).toLocaleDateString("en-US", options);
+                };
+              
+                useEffect(() => {
+                  // Get today's date
+                  const today = new Date();
+                  // Format the date and set it to the state variable
+                  setEditDate(formatDate(today));
+                }, []);
+
 
     //credetials for product
     const [credetials, setCreditials] = useState({
@@ -58,6 +85,8 @@ export const Editpage = () => {
 
                 // Update the state with the new credentials
                 setCreditials(updatedCredentials);
+                setInitialPrice(fetchedData.data.price)
+                setHistory(fetchedData.data.history)
                 // console.log(updatedCredentials)
         }
         const res = await axios.get(baseurl+"deepcategory/getSingleDeepcategory/"+fetchedData.data.deepcategoryid)
@@ -544,10 +573,17 @@ export const Editpage = () => {
                                         setIsWeight(true)
                                     }else{
                                         try{
-                                            const res = await axios.put(baseurl+"product/update/"+id, credetials)
-                                            // console.log({data: credetials})
-                                            // setLOader(false)
-                                            window.location.href = 'https://jiabaili.shop/viewproduct/'+id;
+                                            if(credetials.price == initailPrice){
+                                                const res = await axios.put(baseurl+"product/update/"+id, credetials)
+                                                // //console.log({data: credetials})
+                                                // setLOader(false)
+                                                window.location.href = 'https://jiabaili.shop/viewproduct/'+id;
+                                            }else{
+                                                const res = await axios.put(baseurl+"product/update/history/"+id+"/"+initailPrice+"/"+editDate, credetials)
+                                                // //console.log({data: credetials})
+                                                // setLOader(false)
+                                                window.location.href = 'https://jiabaili.shop/viewproduct/'+id;
+                                            }  
                                         }catch(err){
                                             setLOader(true)
                                         }
@@ -699,6 +735,19 @@ export const Editpage = () => {
                         </div>
                     </div>                  
                 </div>
+                {(history?.length >= 1) && <div className="productnamedescription">
+                    <div className="name">
+                        <div className="title">Prevous Prices</div>
+                            {
+                                history.map((item,index)=>(
+                                    <div className='title' key={index}> {formatCurrency(item.price)} | {item.editdate} </div>
+                                ))
+                            }
+                    </div>
+                    <div className="description">
+                        
+                    </div>
+                </div>}
                 <div className="productnamedescription">
                     <div className="name">
                         <div className="title">Price</div>
