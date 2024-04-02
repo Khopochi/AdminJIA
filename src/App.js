@@ -18,6 +18,7 @@ import Location from './pages/location/Location';
 import Shopproduct from './pages/shops/Shopproduct';
 import { Warehouse } from './pages/barcode/Warehouse';
 import { WarehousePage } from './pages/addpage/Wareadd';
+import { Message } from './pages/messages/Message';
 
 function App() {
   const {user} = useContext(AuthContext)
@@ -28,6 +29,7 @@ function App() {
     <BrowserRouter>
       {user && <Routes>
         <Route path='/login/' element={<Login/>} />
+        <Route path='/chat/' element={<Message/>} />
         <Route path='/addproduct/scan/' element={<Barcode/>} />
         <Route path='/' element={<Layout/>}>
             <Route index element={<Home/>} />

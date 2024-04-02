@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
@@ -43,6 +43,28 @@ export const Sidebar = () => {
 
     }
   }
+
+  const userr = {
+    _id: "65bba67908bbe58ec8a7f1e1"
+  }
+
+  const [unseenmessages, setUnSeenMessages] = useState(0)
+    const countUnseen = async () => {
+      
+        try{
+          const res = await axios.get(baseurl+"message/countunseen/"+userr._id)
+          setUnSeenMessages(res.data)
+          console.log("done")
+        }catch(err){
+
+        }
+    }
+
+    console.log(unseenmessages)
+
+    useEffect(()=>{
+          countUnseen()
+    },[])
   return (
     <div className='sidebar'>
       <div className="jiabaili">
@@ -83,6 +105,13 @@ export const Sidebar = () => {
         <div className="icon"><PointOfSaleOutlinedIcon/></div>
         <div className="term">
           <div className="master">Payments</div>
+        </div>
+      </div>
+
+      <div className="item">
+        <div className="icon"><LocationOnOutlinedIcon/></div>
+        <div className="term">
+        <div onClick={()=>navigate("/chat/")} className="master">Messages [{unseenmessages}]</div>
         </div>
       </div>
 
