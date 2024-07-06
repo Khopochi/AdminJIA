@@ -19,6 +19,8 @@ import Shopproduct from './pages/shops/Shopproduct';
 import { Warehouse } from './pages/barcode/Warehouse';
 import { WarehousePage } from './pages/addpage/Wareadd';
 import { Message } from './pages/messages/Message';
+import Editlocation from './pages/editlocation/Editlocation';
+import EditLocationPage from './pages/editlocation/EditLocationPage';
 
 function App() {
   const {user} = useContext(AuthContext)
@@ -35,6 +37,11 @@ function App() {
             <Route index element={<Home/>} />
             <Route path='/addproduct/' element={<AddProduct/>} />
             <Route path='/locations/' element={<Location/>} />
+            <Route path='/edtilacationpage/'>
+              <Route path=':id' element={<EditLocationPage/>} />
+            </Route> 
+
+            <Route path='/editlocations/' element={<Editlocation/>} />
             <Route path='/warehouse/' element={<Warehouse/>} />
             <Route path='/addproduct/addpage/'>
               <Route path=':id' element={<Addpage/>} />

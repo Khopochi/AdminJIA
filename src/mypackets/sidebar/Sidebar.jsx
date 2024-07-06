@@ -118,7 +118,14 @@ export const Sidebar = () => {
       <div className="item">
         <div className="icon"><LocationOnOutlinedIcon/></div>
         <div className="term">
-        <div onClick={()=>navigate("/locations/")} className="master">Locations</div>
+        <div onClick={()=>navigate("/locations/")} className="master">Add Locations</div>
+        </div>
+      </div>
+
+      <div className="item">
+        <div className="icon"><LocationOnOutlinedIcon/></div>
+        <div className="term">
+        <div onClick={()=>navigate("/editlocations/")} className="master">Edit Locations</div>
         </div>
       </div>
 
